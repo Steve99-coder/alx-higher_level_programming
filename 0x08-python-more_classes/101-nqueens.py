@@ -1,44 +1,34 @@
 #!/usr/bin/python3
-"""
-This module contains an algorithm that resolves the N-Queen puzzle
-using backtracking
+"""algorihm to resolve the N-Queens puzzle using backtracking
 """
 
 
 def isSafe(m_queen, nqueen):
-    """ Method that determines if the queens can or can't kill each other
+    """Determine if the queens can or can't kill each other
     Args:
         m_queen: array that has the queens positions
         nqueen: queen number
     Returns:
-        True: when queens can't kill each other
-        False: when some of the queens can kill
+        True: if queens can't kill each other
+        False: if some of the queens can kill
     """
-
-    for i in range(nqueen):
-
-        if m_queen[i] == m_queen[nqueen]:
+    for que in range(nqueen):
+        if m_queen[que] == m_queen[nqueen]:
             return False
-
-        if abs(m_queen[i] - m_queen[nqueen]) == abs(i - nqueen):
-            return False
-
     return True
 
 
 def print_result(m_queen, nqueen):
-    """ Method that prints the list with the Queens positions
+    """Prints the list with the Queens positions
     Args:
         m_queen: array that has the queens positions
         nqueen: queen number
     """
+    count = []
+    for num in range(nqueen):
+        count.append([num, m_queen[num]])
 
-    res = []
-
-    for i in range(nqueen):
-        res.append([i, m_queen[i]])
-
-    print(res)
+    print(count)
 
 
 def Queen(m_queen, nqueen):
