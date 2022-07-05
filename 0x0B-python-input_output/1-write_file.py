@@ -3,8 +3,7 @@
 Module 3-write_file#!/usr/bin/python3
 """
 
-Contains function that writes to text file and returns num chars written
-"""
+
 
 
 def write_file(filename="", text=""):
