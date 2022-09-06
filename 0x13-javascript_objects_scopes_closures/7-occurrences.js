@@ -4,19 +4,12 @@
  * @params list
  * @params searchElement
  */
-exports.nb0ccurences = function (list, searchElement) {
-  /* let occurences = 0;
-  let counter = 0;
-
-  while (counter < list.length) {
-    if (searchElement === list[counter]) {
-      occurences += 1;
+exports.nbOccurences = function (list, searchElement) {
+  let count = 0;
+  for (let i in list) {
+    if (list[i] === searchElement) {
+      count++;
     }
-
-    counter++;
   }
-
-  return occurences;
-  */
-  return list.reduce((count, current) => current === searchElement ? count + 1 : count, 0);
+  return count;
 };
