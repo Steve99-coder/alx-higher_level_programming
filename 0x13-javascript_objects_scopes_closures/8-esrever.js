@@ -4,17 +4,14 @@
  * @params list
  */
 exports.esrever = function (list) {
-  let counter = 0;
-  const newList = [];
-
-  while (counter < list.length - 1) {
-    counter++;
+  let beg = 0;
+  let end = list.length - 1;
+  while (beg < end) {
+    let tmp = list[beg];
+    list[beg] = list[end];
+    list[end] = tmp;
+    beg++;
+    end--;
   }
-
-  while (counter >= 0) {
-    newList.push(list[counter]);
-    counter--;
-  }
-
-  return newList;
+  return list;
 };
