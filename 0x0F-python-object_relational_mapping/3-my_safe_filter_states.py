@@ -1,30 +1,38 @@
 #!/usr/bin/python3
+""" script that takes in arguments and displays all values in the
+    states table of hbtn_0e_0_usa where name matches the argument.
+    which is safe from MySQL injections
 """
-return matching states; safe from MySQL injections
-# http://bobby-tables.com/python
-parameters given to script: username, password, database, state to match
-"""
 
-import MySQLdb
-from sys import argv
+if __name__ == '__main__':
+    # Standard Library imports
+    import sys
 
-if __name__ == "__main__":
+    # related third party imports
+    import MySQLdb as sql
 
-    # connect to database
-    db = MySQLdb.connect(host="localhost",
-                         port=3306,
-                         user=argv[1],
-                         passwd=argv[2],
-                         db=argv[3])
+    user = sys.argv[1]
+    passwd = sys.argv[2]
+    database = sys.argv[3]
+    userinput = sys.argv[4]
+    newinput = userinput.split("'")
 
-    # create cursor to exec queries using SQL; match arg given
-    cursor = db.cursor()
-    sql_cmd = """SELECT *
-                 FROM states
-                 WHERE name=%s ORDER BY id ASC"""
-    cursor.execute(sql_cmd, (argv[4],))
+    conn = sql.connect(
+            host='localhost',
+            port=3306,
+            user=user,
+            passwd=passwd,
+            db=database)
 
-    for row in cursor.fetchall():
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM states WHERE name='{}'\
+                ORDER BY id".format(newinput[0]))
+
+    rows = cur.fetchall()
+
+    for row in rows:
         print(row)
-    cursor.close()
-    db.close()
+
+    cur.close()
+    conn.close()

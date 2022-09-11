@@ -1,29 +1,38 @@
 #!/usr/bin/python3
+""" script that takes in an argument and displays all values
+    in the states table of hbtn_0e_0_usa
+    where name matches the argument
 """
-return matching states
-parameters given to script: username, password, database, state to match
-"""
 
-import MySQLdb
-from sys import argv
+if __name__ == '__main__':
+    # Standard Library imports
+    import sys
 
-if __name__ == "__main__":
+    # related third party imports
+    import MySQLdb as sql
 
-    # connect to database
-    db = MySQLdb.connect(host="localhost",
-                         port=3306,
-                         user=argv[1],
-                         passwd=argv[2],
-                         db=argv[3])
+    user = sys.argv[1]
+    passwd = sys.argv[2]
+    database = sys.argv[3]
+    userinput = sys.argv[4]
 
-    # create cursor to exec queries using SQL; match arg given
-    cursor = db.cursor()
-    sql_cmd = """SELECT *
-                 FROM states
-                 WHERE name LIKE '{:s}' ORDER BY id ASC""".format(argv[4])
-    cursor.execute(sql_cmd)
-    for row in cursor.fetchall():
-        if row[1] == argv[4]:
-            print(row)
-    cursor.close()
-    db.close()
+    conn = sql.connect(
+            host='localhost',
+            port=3306,
+            user=user,
+            passwd=passwd,
+            db=database)
+
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM states WHERE name='{}'\
+                ORDER BY states.id ASC".format(userinput))
+
+    rows = cur.fetchall()
+
+    for row in rows:
+        if row[1] == userinput:
+            print("{}".format(row))
+
+    cur.close()
+    conn.close()

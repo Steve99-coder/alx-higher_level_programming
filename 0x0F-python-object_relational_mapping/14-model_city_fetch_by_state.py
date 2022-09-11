@@ -1,31 +1,28 @@
 #!/usr/bin/python3
+""" script that prints all City objects
+   from the database hbtn_0e_14_usa
 """
-return all cities from database via python
-parameters given to script: username, password, database
-"""
 
-from sys import argv
-from model_state import Base, State
-from model_city import City
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+if __name__ == '__main__':
+    # Standard Library imports
+    import sys
 
+    # related third party imports
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
 
-if __name__ == "__main__":
+    # local application imports
+    from model_state import Base, State
+    from model_city import City
 
-    # make engine for database
-    user = argv[1]
-    passwd = argv[2]
-    db = argv[3]
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.
-                           format(user, passwd, db), pool_pre_ping=True)
-    Base.metadata.create_all(engine)
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'
+                           .format(sys.argv[1], sys.argv[2],
+                                   sys.argv[3]), pool_pre_ping=True)
+
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # query multiple tables in database and print info from tables
-    for q in session.query(State.name, City.id, City.name).filter(
-            State.id == City.state_id).order_by(City.id):
-        print("{:s}: ({:d}) {:s}".format(q[0], q[1], q[2]))
+    allcities = session.query(State, City).join(City).order_by(City.id).all()
 
-    session.close()
+    for state, city in allcities:
+        print("{}: ({}) {}".format(state.name, city.id, city.name))
